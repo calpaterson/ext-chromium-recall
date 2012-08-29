@@ -6,7 +6,6 @@ OPS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_DIR=$OPS_DIR/build.d
 PROJECT_ROOT=$OPS_DIR/..
 ALTAR_ROOT=$PROJECT_ROOT/../altar
-CRX_URL="https://recall.calpaterson.com/extensions/chromium/recall.crx"
 
 create_artefact_dir_if_not_existing () {
     if [[ ! -d $OPS_DIR/artefacts/ ]]
@@ -40,7 +39,6 @@ render_manifest_and_update_xml () {
     MANIFEST="${MANIFEST_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
     UPDATE_TEMPLATE=`cat $PROJECT_ROOT/ops/update.xml.template`
     UPDATE="${UPDATE_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
-    UPDATE="${UPDATE//CRX_URL/$CRX_URL}"
     echo $MANIFEST > $PROJECT_ROOT/src/manifest.json
     echo $UPDATE > $PROJECT_ROOT/ops/artefacts/update.xml
 }

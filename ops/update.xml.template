@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
   <app appid='bddokapjmijficmlnkecnififkaneckp'>
-    <updatecheck codebase='CRX_URL'
+    <updatecheck codebase='https://recall/calpaterson.com/extensions/recall.crx'
 		 version='0.0.0.0' />
   </app>
 </gupdate>
