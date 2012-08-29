@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -e
+set -x
+
+OPS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILD_DIR=$OPS_DIR/build.d
+PROJECT_ROOT=$OPS_DIR/..
+ALTAR_ROOT=$PROJECT_ROOT/../altar
+CRX_URL="https://recall.calpaterson.com/extensions/chromium/recall.crx"
+
+create_artefact_dir_if_not_existing () {
+    if [[ ! -d $OPS_DIR/artefacts/ ]]
+    then
+	mkdir $OPS_DIR/artefacts
+    fi
+}
+
+get_current_version () {
+    LAST_VERSION=`git tag --list | sort -rV | head -n 1`
+    export CURRENT_VERSION=`expr $LAST_VERSION + 1`
+}
+
+check_clean () {
+    cd $PROJECT_ROOT;
+    git status -u no | grep "nothing to commit"
+    IS_CLEAN=$?
+    if [[ $IS_CLEAN != 0 ]]
+    then
+	echo "Working directory not clean!"
+	false
+    fi
+}
+
+move_existing_manifest_out_of_the_way () {
+    mv $PROJECT_ROOT/src/manifest.json $PROJECT_ROOT/src/manifest.json.real
+}
+
+render_manifest_and_update_xml () {
+    MANIFEST_TEMPLATE=`cat $PROJECT_ROOT/src/manifest.json.real`
+    MANIFEST="${MANIFEST_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
+    UPDATE_TEMPLATE=`cat $PROJECT_ROOT/ops/update.xml.template`
+    UPDATE="${UPDATE_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
+    UPDATE="${UPDATE//CRX_URL/$CRX_URL}"
+    echo $MANIFEST > $PROJECT_ROOT/src/manifest.json
+    echo $UPDATE > $PROJECT_ROOT/ops/artefacts/update.xml
+}
+
+build_chromium_artefact () {
+    chromium-browser --pack-extension=$PROJECT_ROOT/src/ --pack-extension-key=$ALTAR_ROOT/certs/chromium-release-key.pem
+    mv $PROJECT_ROOT/src.crx $OPS_DIR/artefacts/recall.crx
+}
+
+add_tag () {
+    GIT_REVISION=`git log --color=never | head -n 1 | awk '{print $2}'`
+    echo $PWD
+    git tag -a $CURRENT_VERSION $GIT_REVISION -m "$CURRENT_VERSION"
+}
+
+move_real_manifest_back () {
+    mv $PROJECT_ROOT/src/manifest.json.real $PROJECT_ROOT/src/manifest.json
+}
+
+create_artefact_dir_if_not_existing
+get_current_version
+check_clean
+move_existing_manifest_out_of_the_way
+render_manifest_and_update_xml
+build_chromium_artefact
+add_tag
+move_real_manifest_back
