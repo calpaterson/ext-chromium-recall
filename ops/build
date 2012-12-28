@@ -36,7 +36,7 @@ move_existing_manifest_out_of_the_way () {
 
 render_manifest_and_update_xml () {
     MANIFEST_TEMPLATE=`cat $PROJECT_ROOT/src/manifest.json.real`
-    MANIFEST="${MANIFEST_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
+    MANIFEST="${MANIFEST_TEMPLATE//0.0/$CURRENT_VERSION}"
     UPDATE_TEMPLATE=`cat $PROJECT_ROOT/ops/update.xml.template`
     UPDATE="${UPDATE_TEMPLATE//0.0.0.0/$CURRENT_VERSION}"
     echo $MANIFEST > $PROJECT_ROOT/src/manifest.json
