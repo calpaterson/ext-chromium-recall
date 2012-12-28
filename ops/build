@@ -44,7 +44,7 @@ render_manifest_and_update_xml () {
 }
 
 build_chromium_artefact () {
-    chromium-browser --pack-extension=$PROJECT_ROOT/src/ --pack-extension-key=$ALTAR_ROOT/certs/chromium-release-key.pem
+    chromium-browser --pack-extension=$PROJECT_ROOT/src/ --pack-extension-key=$ALTAR_ROOT/extensions/files/chromium-release-key.pem
     mv $PROJECT_ROOT/src.crx $OPS_DIR/artefacts/recall.crx
 }
 
