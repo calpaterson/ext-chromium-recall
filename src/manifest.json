@@ -9,6 +9,5 @@
               "128": "icon128.png"},
     "background": {
 	"scripts": ["background.js"] },
-    "permissions": [ "https://api.calpaterson.com/" ],
-    "update_url": "https://extensions.calpaterson.com/chromium/update.xml"
+    "permissions": [ "https://api.calpaterson.com/" ]
 }
