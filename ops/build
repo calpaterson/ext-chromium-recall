@@ -43,9 +43,14 @@ render_manifest_and_update_xml () {
     echo $UPDATE > $PROJECT_ROOT/ops/artefacts/update.xml
 }
 
-build_chromium_artefact () {
-    chromium-browser --pack-extension=$PROJECT_ROOT/src/ --pack-extension-key=$ALTAR_ROOT/extensions/files/chromium-release-key.pem
-    mv $PROJECT_ROOT/src.crx $OPS_DIR/artefacts/recall.crx
+# build_crx () {
+#     chromium-browser --pack-extension=$PROJECT_ROOT/src/ --pack-extension-key=$ALTAR_ROOT/extensions/files/chromium-release-key.pem
+#     mv $PROJECT_ROOT/src.crx $OPS_DIR/artefacts/recall.crx
+# }
+
+build_zip () {
+    cd $PROJECT_ROOT/src
+    zip -r $OPS_DIR/artefacts/recall.zip *
 }
 
 add_tag () {
@@ -63,6 +68,7 @@ get_current_version
 check_clean
 move_existing_manifest_out_of_the_way
 render_manifest_and_update_xml
-build_chromium_artefact
+# build_crx
+build_zip
 add_tag
 move_real_manifest_back

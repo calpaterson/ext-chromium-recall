@@ -2,7 +2,7 @@
     "name": "Recall",
     "version": "0.0",
     "manifest_version": 2,
-    "description": "Recall is a program for storing 'bookmarks' of different kinds of things.",
+    "description": "This is the Google Chrome extension for Recall - the bookmark search engine",
     "browser_action": { "default_icon": "icon19.png" },
     "icons": {"16": "icon16.png",
               "48": "icon48.png",
